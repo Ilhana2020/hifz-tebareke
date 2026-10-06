@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="bs"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hifz planer – Oktobar 2026</title>
+<style>
+:root{--bg:#f6f1e4;--card:#fffdf7;--ink:#173a2e;--g:#1f7a4d;--r:#c0392b;--gold:#b8923a;--mut:#8a8f86;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f2a21;--card:#16372c;--ink:#f1ead6;--mut:#9db3a6}}
+:root[data-theme="dark"]{--bg:#0f2a21;--card:#16372c;--ink:#f1ead6;--mut:#9db3a6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,'Times New Roman',serif;max-width:560px;margin:auto;padding-bottom:30px}
+header{background:linear-gradient(160deg,#0f4f35,#1f7a4d);color:#f7efd2;text-align:center;padding:18px 12px 16px;border-bottom:4px solid var(--gold);background-image:radial-gradient(circle at 50% 120%,rgba(255,255,255,.12) 0 30%,transparent 31%),linear-gradient(160deg,#0f4f35,#1f7a4d)}
+.ar{font-size:26px;line-height:1.6;font-family:'Amiri','Traditional Arabic',serif}
+h1{margin:2px 0 0;font-size:20px;letter-spacing:1px}
+.sub{font-size:13px;opacity:.85}
+.sum{display:flex;gap:8px;justify-content:center;margin-top:10px;font-size:13px}
+.sum span{background:rgba(255,255,255,.15);padding:4px 10px;border-radius:20px}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;padding:12px}
+.dh{font-size:11px;text-align:center;color:var(--mut);padding-bottom:2px}
+.d{aspect-ratio:1;border-radius:10px;border:2px solid transparent;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--ink);font-family:inherit;padding:0;position:relative}
+.d.off{opacity:.35}
+.d.sel{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold) inset}
+.d.ok{background:var(--g);color:#fff}.d.no{background:var(--r);color:#fff}
+.d.today::after{content:"";position:absolute;bottom:4px;width:5px;height:5px;border-radius:50%;background:var(--gold)}
+.panel{margin:4px 12px;background:var(--card);border-radius:16px;padding:16px;border:1px solid rgba(184,146,58,.5)}
+.panel h2{margin:0 0 10px;font-size:18px;color:var(--gold)}
+.t{padding:10px 12px;border-radius:10px;background:rgba(31,122,77,.1);margin:8px 0;font-size:17px}
+.t small{display:block;color:var(--mut);font-size:12px;margin-bottom:2px;text-transform:uppercase;letter-spacing:.5px}
+.btns{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+button.a{border:0;border-radius:12px;padding:14px;font-size:17px;font-family:inherit;color:#fff;cursor:pointer}
+.bg{background:var(--g)}.br{background:var(--r)}.bx{background:#fff;color:#000;border:1.5px solid var(--mut)!important}
+.st{text-align:center;margin-top:10px;font-size:14px;color:var(--mut)}
+.box{margin:12px;background:var(--card);border-radius:16px;padding:14px 16px;font-size:15px;line-height:1.5}
+.box h3{margin:0 0 6px;color:var(--gold);font-size:16px}
+.box ul{margin:0;padding-left:18px}
+</style></head><body>
+<header>
+<div class="ar">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+<h1>Oktobar 2026</h1>
+<div class="sub">Planer učenja i ponavljanja Kur'ana</div>
+<div class="sum"><span id="cg">✓ 0</span><span id="cr">✗ 0</span><span id="cl">Preostalo 0</span></div>
+</header>
+<div class="grid" id="grid"></div>
+<div class="panel" id="panel"></div>
+<div class="box"><h3>Uradi</h3><ul>
+<li>Od ponedjeljka do petka ponoviti <b>Amme džuz</b></li>
+<li>Od <b>pon–pet</b> svaki dan učiti novo, tj. svaki dan <b>1–2 reda</b></li>
+<li><b>Pola stranice sedmično</b> novog gradiva</li>
+<li><b>2 nove stranice mjesečno</b></li></ul></div>
+<div class="box"><h3>Napomena</h3>Zelenom bojom označi ako je dnevni vird ispunjen, crvenom ako nije. Na kraju mjeseca pogledaj postignuti rezultat.</div>
+<script>
+const A=["En-Naba","Abasa"],B=["At-Takwir","El-Inšikak"],C=["Al-Buruj","El-Fejr"],D=["El-Beled","El-Alak"],E=["Al-Kadr","En-Nas"];
+const R=[A,B,C,D,E];
+const M={5:[0,"1 str El-Mulk"],6:[1,"2 str El-Mulk"],7:[2,"1 str El-Mulk"],8:[3,"2 str El-Mulk"],9:[4,"1 i 2 str El-Mulk"],
+12:[0,"1 str El-Mulk"],13:[1,"2 i 3 str El-Mulk"],14:[2,"1 str El-Mulk"],15:[3,"2 i 3 str El-Mulk"],16:[4,"El-Mulk"],
+19:[0,"1 str El-Mulk"],20:[1,"2 str El-Mulk"],21:[2,"564 str"],22:[3,"1 str El-Mulk"],23:[4,"2 str El-Mulk"],
+26:[0,"1 str El-Mulk"],27:[1,"2 str El-Mulk"],28:[2,"564 str + 16–29 ajet Kalem"],29:[3,"565 str"],30:[4,"564 str + 16–29 ajet Kalem"]};
+const tasks=d=>{if(d==24)return{rep:null,mulk:"564 str",nov:false};const m=M[d];if(!m)return null;const r=R[m[0]];return{rep:"od "+r[0]+" do "+r[1],mulk:m[1],nov:true}};
+let S={};try{S=JSON.parse(localStorage.getItem("hifz10")||"{}")}catch(e){}
+const save=()=>{try{localStorage.setItem("hifz10",JSON.stringify(S))}catch(e){}};
+const now=new Date();const td=(now.getFullYear()==2026&&now.getMonth()==9)?now.getDate():0;
+let sel=tasks(td)?td:5;
+const MN=["Ponedjeljak","Utorak","Srijeda","Četvrtak","Petak","Subota","Nedjelja"];
+function draw(){
+ const g=document.getElementById("grid");g.innerHTML="";
+ ["Pon","Uto","Sri","Čet","Pet","Sub","Ned"].forEach(x=>g.insertAdjacentHTML("beforeend",`<div class="dh">${x}</div>`));
+ for(let i=0;i<3;i++)g.insertAdjacentHTML("beforeend","<div></div>"); // 1.10.2026 je četvrtak
+ for(let d=1;d<=31;d++){const t=tasks(d);const b=document.createElement("button");
+  b.className="d"+(t?"":" off")+(S[d]=="ok"?" ok":S[d]=="no"?" no":"")+(d==sel?" sel":"")+(d==td?" today":"");
+  b.textContent=d;if(t)b.onclick=()=>{sel=d;draw()};g.appendChild(b)}
+ let ok=0,no=0,all=0;for(let d=1;d<=31;d++)if(tasks(d)){all++;if(S[d]=="ok")ok++;if(S[d]=="no")no++}
+ cg.textContent="✓ "+ok;cr.textContent="✗ "+no;cl.textContent="Preostalo "+(all-ok-no);
+ const t=tasks(sel),p=document.getElementById("panel");
+ const dow=MN[(sel+2)%7];
+ const st=S[sel]=="ok"?"Označeno: ispunjeno ✓":S[sel]=="no"?"Označeno: nije ispunjeno ✗":"Još nije označeno";
+ p.innerHTML=`<h2>${dow}, ${sel}. oktobar</h2>`+
+  (t.rep?`<div class="t"><small>Ponoviti</small>${t.rep}</div>`:"")+
+  `<div class="t"><small>El-Mulk</small>${t.mulk}</div>`+
+  (t.nov?`<div class="t"><small>Novo</small>Naučiti novo (1–2 reda)</div>`:"")+
+  `<div class="btns"><button class="a bg" onclick="setS('ok')">✓ Ispunjeno</button><button class="a br" onclick="setS('no')">✗ Nije ispunjeno</button><button class="a bx" onclick="setS(null)">Izbriši oznaku</button></div><div class="st">${st}</div>`;
+}
+function setS(v){if(v)S[sel]=v;else delete S[sel];save();draw()}
+draw();
+</script></body></html>
