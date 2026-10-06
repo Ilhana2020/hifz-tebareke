@@ -7,7 +7,7 @@
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f2a21;--card:#16372c;--ink:#f1ead6;--mut:#9db3a6}}
 :root[data-theme="dark"]{--bg:#0f2a21;--card:#16372c;--ink:#f1ead6;--mut:#9db3a6}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,'Times New Roman',serif;max-width:560px;margin:auto;padding-bottom:30px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Amiri',Georgia,'Times New Roman',serif;max-width:560px;margin:auto;padding-bottom:30px}
 header{background:linear-gradient(160deg,#0f4f35,#1f7a4d);color:#f7efd2;text-align:center;padding:18px 12px 16px;border-bottom:4px solid var(--gold);background-image:radial-gradient(circle at 50% 120%,rgba(255,255,255,.12) 0 30%,transparent 31%),linear-gradient(160deg,#0f4f35,#1f7a4d)}
 .ar{font-size:26px;line-height:1.6;font-family:'Amiri','Traditional Arabic',serif}
 h1{margin:2px 0 0;font-size:20px;letter-spacing:1px}
@@ -25,9 +25,10 @@ h1{margin:2px 0 0;font-size:20px;letter-spacing:1px}
 .panel h2{margin:0 0 10px;font-size:18px;color:var(--gold)}
 .t{padding:10px 12px;border-radius:10px;background:rgba(31,122,77,.1);margin:8px 0;font-size:17px}
 .t small{display:block;color:var(--mut);font-size:12px;margin-bottom:2px;text-transform:uppercase;letter-spacing:.5px}
+.ayh{margin:12px 6px 0;background:rgba(255,255,255,.15);border-radius:14px;padding:10px 14px;font-size:15px;line-height:1.5;text-align:left}.al{font-size:12px;opacity:.85;margin-bottom:4px;letter-spacing:.5px}.ay{margin:4px 0}.ay b{color:#e8cf8a}
 .btns{display:flex;flex-direction:column;gap:8px;margin-top:14px}
 button.a{border:0;border-radius:12px;padding:14px;font-size:17px;font-family:inherit;color:#fff;cursor:pointer}
-.bg{background:var(--g)}.br{background:var(--r)}.bx{background:#fff;color:#000;border:1.5px solid var(--mut)!important}
+.bg{background:var(--g)}.br{background:var(--r)}.bx{background:#2563eb;color:#fff}
 .st{text-align:center;margin-top:10px;font-size:14px;color:var(--mut)}
 .box{margin:12px;background:var(--card);border-radius:16px;padding:14px 16px;font-size:15px;line-height:1.5}
 .box h3{margin:0 0 6px;color:var(--gold);font-size:16px}
@@ -35,9 +36,9 @@ button.a{border:0;border-radius:12px;padding:14px;font-size:17px;font-family:inh
 </style></head><body>
 <header>
 <div class="ar">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
-<h1>Oktobar 2026</h1>
+<h1>Oktobar, 2026.</h1>
 <div class="sub">Planer učenja i ponavljanja Kur'ana</div>
-<div class="sum"><span id="cg">✓ 0</span><span id="cr">✗ 0</span><span id="cl">Preostalo 0</span></div>
+<div class="ayh" id="ayh"></div>
 </header>
 <div class="grid" id="grid"></div>
 <div class="panel" id="panel"></div>
@@ -48,12 +49,20 @@ button.a{border:0;border-radius:12px;padding:14px;font-size:17px;font-family:inh
 <li><b>2 nove stranice mjesečno</b></li></ul></div>
 <div class="box"><h3>Napomena</h3>Zelenom bojom označi ako je dnevni vird ispunjen, crvenom ako nije. Na kraju mjeseca pogledaj postignuti rezultat.</div>
 <script>
-const A=["En-Naba","Abasa"],B=["At-Takwir","El-Inšikak"],C=["Al-Buruj","El-Fejr"],D=["El-Beled","El-Alak"],E=["Al-Kadr","En-Nas"];
+const A=["النبأ","عبس"],B=["التكوير","الانشقاق"],C=["البروج","الفجر"],D=["البلد","العلق"],E=["القدر","الناس"];
 const R=[A,B,C,D,E];
-const M={5:[0,"1 str El-Mulk"],6:[1,"2 str El-Mulk"],7:[2,"1 str El-Mulk"],8:[3,"2 str El-Mulk"],9:[4,"1 i 2 str El-Mulk"],
-12:[0,"1 str El-Mulk"],13:[1,"2 i 3 str El-Mulk"],14:[2,"1 str El-Mulk"],15:[3,"2 i 3 str El-Mulk"],16:[4,"El-Mulk"],
-19:[0,"1 str El-Mulk"],20:[1,"2 str El-Mulk"],21:[2,"564 str"],22:[3,"1 str El-Mulk"],23:[4,"2 str El-Mulk"],
-26:[0,"1 str El-Mulk"],27:[1,"2 str El-Mulk"],28:[2,"564 str + 16–29 ajet Kalem"],29:[3,"565 str"],30:[4,"564 str + 16–29 ajet Kalem"]};
+const M={5:[0,"1 str الملك"],6:[1,"2 str الملك"],7:[2,"1 str الملك"],8:[3,"2 str الملك"],9:[4,"1 i 2 str الملك"],
+12:[0,"1 str الملك"],13:[1,"2 i 3 str الملك"],14:[2,"1 str الملك"],15:[3,"2 i 3 str الملك"],16:[4,"الملك"],
+19:[0,"1 str الملك"],20:[1,"2 str الملك"],21:[2,"564 str"],22:[3,"1 str الملك"],23:[4,"2 str الملك"],
+26:[0,"1 str الملك"],27:[1,"2 str الملك"],28:[2,"564 str + 16–29 ajet القلم"],29:[3,"565 str"],30:[4,"564 str + 16–29 ajet القلم"]};
+const AY=["Uzvišen i blagoslovljen je Onaj u Čijoj je ruci vlast i On nad svime ima moć,", "Onaj Koji je stvorio smrt i život da bi iskušao koji će od vas bolja djela imati; On je Silni, Oprostitelj grijeha,", "Onaj koji je sedam nebesa kao slojeve, jedne iznad drugih, stvorio - ti u onome što Svemilosni stvara ne vidiš nikakva nesklada, pa ponovo pogledaj, vidiš li i kakvu pukotinu!?", "Zatim, ponovo više puta pogledaj, pogled će ti se vratiti klonuo i umoran.", "Mi smo najbliže nebo sjajnim svjetiljkama ukrasili i učinili smo ih za gađanje šejtana, i patnju u Ognju im pripremili.", "A onima koji ne vjeruju u Gospodara svoga, pripada patnja u Džehennemu. Užasno je to boravište!", "Kad budu u njega bačeni, hučanje njegovo čut će, i on će ključati,", "gotovo da se od bijesa raspadne. Kad god se koja gomila u njega baci, stražari u njemu će je upitati: \"Zar nije niko dolazio da vas upozorava?\"", "\"Jest, dolazio nam je onaj koji nas je upozoravao\", odgovorit će, \"a mi smo poricali i govorili: 'Allah nije objavio ništa, vi ste u velikoj zabludi!'\"", "I reći će: \"Da smo slušali ili razmišljali, ne bismo među stanovnicima Ognja bili!\"", "I oni će priznati svoje grijehe, pa daleko bili stanovnici Ognja!", "Onima koji se Gospodara svoga boje i kad ih niko ne vidi - pripada oprost i nagrada velika!", "Govorili vi tiho ili glasno - pa, On sigurno zna šta grudi kriju!", "A kako i ne bi znao Onaj Koji stvara, Koji zna i ono što je najsitnije, Onaj Koji u potpunosti sve zna!", "On vam je Zemlju pogodnom učinio, pa hodajte predjelima njezinim i hranite se onim što On daje, ali Njemu se sve vraća.", "Jeste li sigurni da vas Onaj Koji je na nebesima neće u zemlju utjerati, kad se ona počne iznenada tresti?!", "Ili ste sigurni da Onaj Koji je na nebesima na vas neće vjetar s kamenjem poslati?! Pa, znat ćete kakvo je upozorenje Moje!", "A poricali su i oni prije njih, pa kakva je bila osuda Moja!", "Zar oni ne vide ptice iznad sebe kako raširenih krila lete, a i skupljaju ih? Samo ih Svemilosni drži; On, zaista, sve dobro vidi.", "I, ko je taj koji će biti vojska vaša i vama pomoći, osim Svemilosnog?! Ništa osim obmane nevjernici nemaju!", "A, i ko je taj koji će vas nahraniti, ako On hranu Svoju uskrati?! Ali, oni su ustrajni u osionosti i odbojnosti.", "Da li je bolje upućen onaj koji ide pognut s licem prema zemlji ili onaj koji pravim putem uspravno hodi?", "Reci: \"On vas je prvi put stvorio i dao vam sluh, vid i razum, pa kako samo malo zahvaljujete!\"", "Reci: \"On vas je po Zemlji razasuo i pred Njim ćete biti sakupljeni.\"", "A oni govore: \"Kad će već jednom ta prijetnja, ako istinu govorite?!\"", "Reci: \"Samo Allah zna! A ja sam samo upozoritelj jasni.\"", "Kad je izbliza ugledaju, ojađena bit će lica onih koji nisu vjerovali i bit će rečeno: \"Evo, ovo je ono što ste požurivali!\"", "Reci: \"Kažite vi meni: ako Allah pošalje smrt meni i onima koji su sa mnom, ili ako nam se smiluje, ko će nevjernike od bolne patnje zaštititi?\"", "Reci: \"On je Svemilosni, u Njega vjerujemo i na Njega se oslanjamo, a vi ćete sigurno saznati ko je u očitoj zabludi.\"", "Reci: \"Šta mislite, ako vode vaše ponornice postanu, ko će vam vodu na površinu izvesti?\""];
+const PL=[[1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6], [7, 7], [8, 8], [9, 9], [10, 10], [11, 11], [12, 12], [13, 13], [14, 14], [15, 15], [16, 16], [17, 17], [18, 18], [19, 19]];
+const LD=Object.keys(M).map(Number).filter(x=>x>=6).sort((a,b)=>a-b);
+const esc=x=>x.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+function ayBox(d){const i=LD.indexOf(d);if(i<0||!PL[i])return"";const[a,b]=PL[i];
+ let h=`<div class="al">الملك · ajet ${a===b?a:a+"–"+b}</div>`;
+ for(let k=a;k<=b;k++)h+=`<div class="ay"><b>${k}.</b> ${esc(AY[k-1])}</div>`;
+ return h}
 const tasks=d=>{if(d==24)return{rep:null,mulk:"564 str",nov:false};const m=M[d];if(!m)return null;const r=R[m[0]];return{rep:"od "+r[0]+" do "+r[1],mulk:m[1],nov:true}};
 let S={};try{S=JSON.parse(localStorage.getItem("hifz10")||"{}")}catch(e){}
 const save=()=>{try{localStorage.setItem("hifz10",JSON.stringify(S))}catch(e){}};
@@ -67,16 +76,15 @@ function draw(){
  for(let d=1;d<=31;d++){const t=tasks(d);const b=document.createElement("button");
   b.className="d"+(t?"":" off")+(S[d]=="ok"?" ok":S[d]=="no"?" no":"")+(d==sel?" sel":"")+(d==td?" today":"");
   b.textContent=d;if(t)b.onclick=()=>{sel=d;draw()};g.appendChild(b)}
- let ok=0,no=0,all=0;for(let d=1;d<=31;d++)if(tasks(d)){all++;if(S[d]=="ok")ok++;if(S[d]=="no")no++}
- cg.textContent="✓ "+ok;cr.textContent="✗ "+no;cl.textContent="Preostalo "+(all-ok-no);
+ document.getElementById("ayh").innerHTML=ayBox(sel)||`<div class="al">${sel<6?"Ajeti počinju 6. oktobra":"Danas nema novih ajeta"}</div>`;
  const t=tasks(sel),p=document.getElementById("panel");
  const dow=MN[(sel+2)%7];
  const st=S[sel]=="ok"?"Označeno: ispunjeno ✓":S[sel]=="no"?"Označeno: nije ispunjeno ✗":"Još nije označeno";
  p.innerHTML=`<h2>${dow}, ${sel}. oktobar</h2>`+
   (t.rep?`<div class="t"><small>Ponoviti</small>${t.rep}</div>`:"")+
-  `<div class="t"><small>El-Mulk</small>${t.mulk}</div>`+
+  `<div class="t"><small>الملك</small>${t.mulk}</div>`+
   (t.nov?`<div class="t"><small>Novo</small>Naučiti novo (1–2 reda)</div>`:"")+
-  `<div class="btns"><button class="a bg" onclick="setS('ok')">✓ Ispunjeno</button><button class="a br" onclick="setS('no')">✗ Nije ispunjeno</button><button class="a bx" onclick="setS(null)">Izbriši oznaku</button></div><div class="st">${st}</div>`;
+  `<div class="btns"><button class="a bg" onclick="setS('ok')">Ispunjeno</button><button class="a br" onclick="setS('no')">Nije ispunjeno</button><button class="a bx" onclick="setS(null)">Izbriši</button></div>`;
 }
 function setS(v){if(v)S[sel]=v;else delete S[sel];save();draw()}
 draw();
