@@ -33,6 +33,15 @@ button.a{border:0;border-radius:12px;padding:14px;font-size:17px;font-family:inh
 .box{margin:12px;background:var(--card);border-radius:16px;padding:14px 16px;font-size:15px;line-height:1.5}
 .box h3{margin:0 0 6px;color:var(--gold);font-size:16px}
 .box ul{margin:0;padding-left:18px}
+.up{display:block;background:var(--g);color:#fff;border-radius:12px;padding:12px;text-align:center;font-size:16px;cursor:pointer;margin-top:4px}
+.f{position:relative;display:flex;align-items:center;gap:12px;background:rgba(31,122,77,.1);border-radius:10px;padding:10px 78px 10px 10px;margin:8px 0}
+.f .th{width:60px;height:60px;border-radius:10px;object-fit:cover;flex:none;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.18);overflow:hidden}
+.f .bd{color:#fff;font-weight:bold;font-size:13px;letter-spacing:.5px;font-family:Arial,sans-serif;background:#6b7f74}.bd.pdf{background:#c0392b}.bd.doc{background:#2b6cb0}.bd.xls{background:#1f7a4d}.bd.ppt{background:#d9822b}.bd.img{background:#8e5ea2}.bd.zip{background:#8a7a3a}
+.f .nm{min-width:0;flex:1;font-size:14px;line-height:1.3}.f .nm b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:normal}.f .nm small{color:var(--mut)}
+.f .ac{position:absolute;top:6px;right:6px;display:flex;gap:4px}
+.f .ib{width:32px;height:32px;border:0;border-radius:8px;background:transparent;cursor:pointer;padding:5px;display:flex;align-items:center;justify-content:center}
+.f .ib svg{width:21px;height:21px}.f .tr{color:var(--r)}.f .dl{color:#2563eb}
+.empty{color:var(--mut);font-size:14px;margin-top:8px}
 </style></head><body>
 <header>
 <div class="ar">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
@@ -42,6 +51,10 @@ button.a{border:0;border-radius:12px;padding:14px;font-size:17px;font-family:inh
 </header>
 <div class="grid" id="grid"></div>
 <div class="panel" id="panel"></div>
+<div class="box" id="mat"><h3>Materijal s nastave</h3>
+<input type="file" id="fi" multiple hidden>
+<label class="up" for="fi">Upload</label>
+<div id="fl"></div></div>
 <div class="box"><h3>Uradi</h3><ul>
 <li>Od ponedjeljka do petka ponoviti <b>Amme džuz</b></li>
 <li>Od <b>pon–pet</b> svaki dan učiti novo, tj. svaki dan <b>1–2 reda</b></li>
@@ -88,4 +101,38 @@ function draw(){
 }
 function setS(v){if(v)S[sel]=v;else delete S[sel];save();draw()}
 draw();
+/* Materijal s nastave: fajlovi se čuvaju u IndexedDB na ovom uređaju */
+let DB=null,MEM=[],mid=0,urls=[];
+const idbOpen=()=>new Promise((res,rej)=>{try{const r=indexedDB.open("hifz-materijal",1);r.onupgradeneeded=()=>r.result.createObjectStore("files",{keyPath:"id",autoIncrement:true});r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}catch(e){rej(e)}});
+const getAll=()=>DB?new Promise((res,rej)=>{const q=DB.transaction("files").objectStore("files").getAll();q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)}):Promise.resolve(MEM.slice());
+const addF=f=>DB?new Promise((res,rej)=>{const t=DB.transaction("files","readwrite");t.objectStore("files").add(f);t.oncomplete=res;t.onerror=()=>rej(t.error);t.onabort=()=>rej(t.error)}):(f.id=++mid,MEM.push(f),Promise.resolve());
+const delF=id=>DB?new Promise((res,rej)=>{const t=DB.transaction("files","readwrite");t.objectStore("files").delete(id);t.oncomplete=res;t.onerror=()=>rej(t.error)}):(MEM=MEM.filter(x=>x.id!==id),Promise.resolve());
+const fmt=n=>n<1024?n+" B":n<1048576?(n/1024).toFixed(0)+" KB":(n/1048576).toFixed(1)+" MB";
+const TRASH='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v6M14 11v6"/></svg>';
+const DOWN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>';
+function kind(f){const e=(f.name.split('.').pop()||'').toLowerCase();if((f.type||'').startsWith('image/'))return['img',e.toUpperCase().slice(0,4)||'IMG'];if(e=='pdf')return['pdf','PDF'];if(/^docx?$|^odt$|^rtf$|^txt$/.test(e))return['doc',e.toUpperCase()];if(/^xlsx?$|^csv$/.test(e))return['xls',e.toUpperCase()];if(/^pptx?$/.test(e))return['ppt',e.toUpperCase()];if(/^(zip|rar|7z)$/.test(e))return['zip',e.toUpperCase()];return['',e?e.toUpperCase().slice(0,4):'FILE']}
+function badge(f){const k=kind(f),d=document.createElement('div');d.className='th bd '+k[0];d.textContent=k[1];return d}
+async function mkThumb(file){try{if(!(file.type||'').startsWith('image/'))return null;const b=await createImageBitmap(file),S=160,r=Math.max(S/b.width,S/b.height),w=b.width*r,h=b.height*r,c=document.createElement('canvas');c.width=c.height=S;c.getContext('2d').drawImage(b,(S-w)/2,(S-h)/2,w,h);if(b.close)b.close();return await new Promise(res=>c.toBlob(res,'image/jpeg',.75))}catch(e){return null}}
+function dlF(f){const u=URL.createObjectURL(f.blob),a=document.createElement("a");a.href=u;a.download=f.name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000)}
+async function renderF(){
+ const box=document.getElementById("fl");urls.forEach(u=>URL.revokeObjectURL(u));urls=[];box.textContent="";
+ let a=[];try{a=await getAll()}catch(e){}
+ if(!a.length){const p=document.createElement("div");p.className="empty";p.textContent="Još nema dodanih fajlova.";box.appendChild(p);return}
+ a.sort((x,y)=>y.added-x.added).forEach(f=>{
+  const row=document.createElement("div");row.className="f";
+  let th;const src=f.thumb||((f.type||"").startsWith("image/")?f.blob:null);
+  if(src){th=document.createElement("img");const u=URL.createObjectURL(src);urls.push(u);th.src=u;th.alt="";th.className="th";th.onerror=()=>th.replaceWith(badge(f))}else th=badge(f);
+  const nm=document.createElement("div");nm.className="nm";
+  const b=document.createElement("b");b.textContent=f.name;b.title=f.name;
+  const sm=document.createElement("small");sm.textContent=fmt(f.size);
+  const dl=document.createElement("button");dl.className="ib dl";dl.title="Download";dl.setAttribute("aria-label","Download fajl");dl.innerHTML=DOWN;dl.onclick=()=>dlF(f);
+  nm.append(b,sm);
+  const tr=document.createElement("button");tr.className="ib tr";tr.title="Izbriši";tr.setAttribute("aria-label","Izbriši fajl");tr.innerHTML=TRASH;
+  tr.onclick=async()=>{try{await delF(f.id)}catch(e){}renderF()};
+  const ac=document.createElement("div");ac.className="ac";ac.append(dl,tr);row.append(th,nm,ac);box.appendChild(row)})}
+document.getElementById("fi").onchange=async e=>{
+ const fl=[...e.target.files];let fail=false;
+ for(let i=0;i<fl.length;i++){try{await addF({name:fl[i].name,type:fl[i].type,size:fl[i].size,blob:fl[i],thumb:await mkThumb(fl[i]),added:Date.now()+i})}catch(err){fail=true}}
+ e.target.value="";if(fail)alert("Neki fajlovi nisu spremljeni (nema dovoljno prostora ili je preglednik blokirao spremanje).");renderF()};
+idbOpen().then(d=>{DB=d}).catch(()=>{}).then(renderF);
 </script></body></html>
